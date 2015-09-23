@@ -1,7 +1,8 @@
 %Varpan
 %Isa Nedersjö
 clc, clear all, close all;    %Clear window
-
+pm = char(177); % Define plus minus symbol
+RK4_relerr = 0.0209e-2;
 %% ---------Part 1---------
 
 %Solve ODE for arbitrary throwing angle
@@ -13,8 +14,15 @@ bana = RKode(alfa,v0,uw1,h);     %Runge Kuttas method of solving ODE.
 %Bana = Time X-pos X-speed Y-pos Y-speed
 tend = LinPol2(bana(:,1),bana(:,4),0);
 xend = LinPol2(bana(:,2),bana(:,4),0);
-fprintf('--- Kast vid godycklig vinkel\n')
-fprintf('Vid kastvinkeln %i landar varpan på %.3f meter efter tiden %.3f.\n\n',alfa,xend,tend) %Display results
+% Errors 
+t_err = linpol_err(bana, 1);
+x_RK4_err = xend*RK4_relerr;
+x_linpol_err = linpol_err(bana, 4);
+t_RK4_err = tend*RK4_relerr;
+t_linpol_err = linpol_err(bana, 4);
+fprintf('--- Kast vid godycklig vinkel---\n')
+fprintf('Vid kastvinkeln %i landar varpan på %.3f%c%0.3fmeter\n',alfa, xend, pm, x_linpol_err + x_RK4_err)
+fprintf('efter tiden %0.3f%c%0.3f sekunder\r\n', tend, pm, t_RK4_err + t_linpol_err) 
 
 %% --------Part 2----------
 %Find angles that give a winning throw 
@@ -71,7 +79,7 @@ fprintf('\n')
 %% ----- Part 5-------
 % Calculate convergences and errors
 %Convergence rate of Runge Kutta's Method
-
+fprintf('--- Felskattningar ---\n')
 % Repeat RK4 while halving step size
 H =[];
 tol = 1e-3;
@@ -84,7 +92,7 @@ end
 
 % Second htest = 0.005, step length used in calculations
 rel_err_RK4 = 1 - H(2)/H(1);
-fprintf('Relativt fel för RK4 med steglängd %0.4f är %f%%', h, abs(rel_err_RK4*100))
+fprintf('Relativt fel för RK4 med steglängd %0.4f är %f%%\r', h, abs(rel_err_RK4*100))
 % Get all diffs to verify results of error calc
 delta = diff(H);
 errors_RK4 = [];
@@ -95,7 +103,6 @@ end
 
 deviations = errors_RK4 - mean(errors_RK4);
 conv_rate = mean(errors_RK4);
-fprintf('--- Felskattningar ---\n')
 fprintf('Runge Kutta konvergerar med hastigheten %6.2f\r',conv_rate)
 fprintf('Konvergensberäkning har maximal avvikelse %0.2f*10^-3\r', max(abs(deviations))*1e3)
 
