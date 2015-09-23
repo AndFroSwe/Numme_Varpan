@@ -77,14 +77,12 @@ H =[];
 tol = 1e-3;
 for i=1:4
     htest = 0.01/(2^(i-1));       %Halve step length with every iteration
+    disp(htest)
     test = RKode(alfa,v0,uw1,htest);
     ind = find(abs(test(:,1)-2.0)<tol);  % Tolerance negates truncation error when finding 2.0
     H(i) = test(ind,2);        %Evaluate next last value of landing x-value
 end
 
-% Second htest = 0.005, step length used in calculations
-rel_err_RK4 = 1 - H(2)/H(1);
-fprintf('Relativt fel för RK4 med steglängd %0.4f är %f%%', h, abs(rel_err_RK4*100))
 % Get all diffs to verify results of error calc
 delta = diff(H);
 errors_RK4 = [];

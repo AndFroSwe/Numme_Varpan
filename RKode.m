@@ -13,7 +13,7 @@ tid = [];
 
 % Starting values
 alfa_rad = alfa*pi/180;     %Deg to radians
-u = [x0 v*cos(alfa_rad) y0 v*sin(alfa_rad)];   %Vector with 
+u = [x0 v*cos(alfa_rad) y0 v*sin(alfa_rad)];   %Vector with x xdot y ydot 
 bana = [u];
 tid = [t0];
 
