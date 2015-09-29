@@ -9,9 +9,10 @@ secant_err = 0.005;
 %Solve ODE for arbitrary throwing angle
 v0 = 19;
 alfa = 45;    %Arbitrary throwing angle
-uw1 = 0;
+global uw
+uw = 0;
 h = 0.005;    %Step size RKode
-bana = RKode(alfa,v0,uw1,h);     %Runge Kuttas method of solving ODE. 
+bana = RKode(alfa,v0,uw,h);     %Runge Kuttas method of solving ODE. 
 %Bana = Time X-pos X-speed Y-pos Y-speed
 tend = LinPol2(bana(:,1),bana(:,4),0);
 xend = LinPol2(bana(:,2),bana(:,4),0);
@@ -30,10 +31,10 @@ fprintf('efter tiden %0.3f%c%0.3f sekunder\r\n', tend, pm, t_RK4_err + t_linpol_
 %Assume that high trajectory is at >45 deg and low at <45 deg
 alfa_high = alfa + 30;       %Starting value, high trajectory
 alfa_low = alfa - 30;        %Starting value, low trajectory
-[angle_high, n_high] = Sekant(alfa, alfa_high,v0,uw1,h); %Secant method for finding solution to high traj. n = number of iterations
-[angle_low, n_low] = Sekant(alfa, alfa_low,v0,uw1,h);     %Secant method for finding solution to low traj. n = number of iterations
-bana_high = RKode(angle_high,v0,uw1,h);
-bana_low = RKode(angle_low,v0,uw1,h);
+[angle_high, n_high] = Sekant(alfa, alfa_high,v0,uw,h); %Secant method for finding solution to high traj. n = number of iterations
+[angle_low, n_low] = Sekant(alfa, alfa_low,v0,uw,h);     %Secant method for finding solution to low traj. n = number of iterations
+bana_high = RKode(angle_high,v0,uw,h);
+bana_low = RKode(angle_low,v0,uw,h);
 fprintf('--- Vinnande kastvinklar utan vind ---\n')
 fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_high, pm, secant_err, angle_low, pm, secant_err )
 fprintf('Alla vinklar har felet 0.05\n')
@@ -60,11 +61,12 @@ v1 = 30;       %Inital speed
 uw2 = [2 10 20]; %Wind speeds
 fprintf('--- Vinnande kastvinklar vid olika motvind ---\n')
 for i = 1:3
-    [angle_high, n_high] = Sekant(alfa, alfa_high,v0,uw2(i),h); %Secant method for finding solution to high traj. n = number of iterations
-    [angle_low, n_low] = Sekant(alfa, alfa_low,v0,uw2(i),h);     %Secant method for finding solution to low traj. n = number of iterations
-    bana_high = RKode(angle_high,v1, uw2(i),h);
-    bana_low = RKode(angle_low,v1,uw2(i),h);
-    fprintf('Vid uw = -%i är vinnande kastvinklar är %0.2f och %0.2f grader.\n',uw2(i),angle_high,angle_low)
+    uw = uw2(i)
+    [angle_high, n_high] = Sekant(alfa, alfa_high,v0,h); %Secant method for finding solution to high traj. n = number of iterations
+    [angle_low, n_low] = Sekant(alfa, alfa_low,v0,h);     %Secant method for finding solution to low traj. n = number of iterations
+    bana_high = RKode(angle_high,v1, h);
+    bana_low = RKode(angle_low,v1,h);
+    fprintf('Vid uw = -%i är vinnande kastvinklar är %0.2f och %0.2f grader.\n',uw2,angle_high,angle_low)
     figure
     h1 = plot(bana_high(:,2),bana_high(:,4));
     hold on
@@ -87,7 +89,7 @@ H =[];
 tol = 1e-3;
 for i=1:4
     htest = 0.01/(2^(i-1));       %Halve step length with every iteration
-    test = RKode(alfa,v0,uw1,htest);
+    test = RKode(alfa,v0,uw,htest);
     ind = find(abs(test(:,1)-2.0)<tol);  % Tolerance negates truncation error when finding 2.0
     H(i) = test(ind,2);        %Evaluate next last value of landing x-value
 end

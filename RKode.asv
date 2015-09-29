@@ -12,7 +12,6 @@ bana = struct(  'time', [t],...
                 'y',    [u(3)],...
                 'yvel', [u(4)]);
 
-% Iterate RK until varpan hits ground
 while y >= yend;
     [vut, tut] = RKstep(u, h, t);
     v = vut;
@@ -23,4 +22,6 @@ while y >= yend;
     bana.xvel = [bana.xvel u(2)];
     bana.y = [bana.y u(3)];
     bana.yvel = [bana.yvel u(4)];
+    
+    
 end

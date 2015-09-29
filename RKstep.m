@@ -1,4 +1,4 @@
-%RungeKuttas method for solving ODE 
+%Step in RungeKuttas method for solving ODE 
 % u input vector, h step length, tin current time step
 function [kast, tut] = RKstep (u, h, t)
 
