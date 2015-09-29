@@ -85,7 +85,7 @@ fprintf('--- Felskattningar ---\n')
 % Repeat RK4 while halving step size
 H =[];
 tol = 1e-3;
-for i=1:4
+for i=1:7
     htest = 0.01/(2^(i-1));       %Halve step length with every iteration
     test = RKode(alfa,v0,uw1,htest);
     ind = find(abs(test(:,1)-2.0)<tol);  % Tolerance negates truncation error when finding 2.0
