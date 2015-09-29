@@ -3,6 +3,7 @@
 clc, clear all, close all;    %Clear window
 pm = char(177); % Define plus minus symbol
 RK4_relerr = 0.0209e-2;
+secant_err = 0.005;
 %% ---------Part 1---------
 
 %Solve ODE for arbitrary throwing angle
@@ -34,7 +35,8 @@ alfa_low = alfa - 30;        %Starting value, low trajectory
 bana_high = RKode(angle_high,v0,uw1,h);
 bana_low = RKode(angle_low,v0,uw1,h);
 fprintf('--- Vinnande kastvinklar utan vind ---\n')
-fprintf('Vinnande kastvinklar är %0.2f och %0.2f grader.\n\n',angle_high,angle_low)
+fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_high, pm, secant_err, angle_low, pm, secant_err )
+fprintf('Alla vinklar har felet 0.05\n')
 
 %% --------Part 3-------
 %Interpolate and plot winning throws
@@ -54,14 +56,14 @@ grid on
 
 %% ---------Part 4----------
 %Simulate throws in the wind
-v1 = 100;       %Inital speed
+v1 = 30;       %Inital speed
 uw2 = [2 10 20]; %Wind speeds
 fprintf('--- Vinnande kastvinklar vid olika motvind ---\n')
 for i = 1:3
     [angle_high, n_high] = Sekant(alfa, alfa_high,v0,uw2(i),h); %Secant method for finding solution to high traj. n = number of iterations
     [angle_low, n_low] = Sekant(alfa, alfa_low,v0,uw2(i),h);     %Secant method for finding solution to low traj. n = number of iterations
-    bana_high = RKode(angle_high,v0,uw2(i),h);
-    bana_low = RKode(angle_low,v0,uw2(i),h);
+    bana_high = RKode(angle_high,v1, uw2(i),h);
+    bana_low = RKode(angle_low,v1,uw2(i),h);
     fprintf('Vid uw = -%i är vinnande kastvinklar är %0.2f och %0.2f grader.\n',uw2(i),angle_high,angle_low)
     figure
     h1 = plot(bana_high(:,2),bana_high(:,4));
