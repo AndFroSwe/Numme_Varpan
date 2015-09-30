@@ -2,7 +2,7 @@
 %Isa Nedersjö
 clc, clear all, close all;    %Clear window
 pm = char(177); % Define plus minus symbol
-RK4_relerr = 0.0209e-2;
+RK4_relerr = 0.200e-2;
 secant_err = 0.005;
 %% ---------Part 1---------
 
@@ -39,7 +39,6 @@ u_low = start_vec(angle_low, v0);
 bana_low = RKode(u_low, h);      % Calculate low trajectory
 fprintf('--- Vinnande kastvinklar utan vind ---\n')
 fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_high, pm, secant_err, angle_low, pm, secant_err )
-fprintf('Alla vinklar har felet 0.05\n')
 
 %% --------Part 3-------
 %Interpolate and plot winning throws
@@ -59,44 +58,46 @@ grid on
 
 %% ---------Part 4----------
 %Simulate throws in the wind
-v1 = 19;       %Inital speed
-uw2 = [2 10 20]; %Wind speeds
+v2 = [30 35 40];       %Inital speed
+uw2 = [-2 -10 -20]; %Wind speeds
 fprintf('--- Vinnande kastvinklar vid olika motvind ---\n')
 for i = 1:3
     uw = uw2(i);
-    [angle_high, n_high] = Sekant(alfa, alfa_high, v1, h); %Secant method for finding solution to high traj. n = number of iterations
-    [angle_low, n_low] = Sekant(alfa, alfa_low, v1, h);     %Secant method for finding solution to low traj. n = number of iterations
-    u_high_uw = start_vec(angle_high, v1);
+    [angle_high, n_high] = Sekant(alfa, alfa_high, v2(i), h); %Secant method for finding solution to high traj. n = number of iterations
+    [angle_low, n_low] = Sekant(alfa, alfa_low, v2(i), h);     %Secant method for finding solution to low traj. n = number of iterations
+    u_high_uw = start_vec(angle_high, v2(i));
     bana_high = RKode(u_high_uw, h);
-    u_low_uw = start_vec(angle_low, v1);
+    u_low_uw = start_vec(angle_low, v2(i));
     bana_low = RKode(u_low_uw, h);
-    fprintf('Vid uw = %i är vinnande kastvinklar är %0.2f och %0.2f grader.\n',uw, angle_high, angle_low)
+    fprintf('Vid V=%i och uw=%i är vinnande kastvinklar är %0.2f och %0.2f grader.\n',v2(i), uw, angle_high, angle_low)
     figure
     h1 = plot(bana_high.x,bana_high.y);
     hold on
     h2 = plot(bana_low.x,bana_low.y,'r');
-    axis([0 21 0 12]);
+    %axis([0 21 0 12]);
     grid on;
     xlabel('X-position [m]');
     ylabel('Y-position [m]');
     legend([h1 h2],{'Hög bana', 'Låg bana'}); 
-    str = sprintf('Kastbanor för vinnande kast vid u_w=-%i',uw2(i));
+    str = sprintf('Kastbanor för vinnande kast vid u_w=%i',uw2(i));
     title(str)
 end
+fprintf('Alla vinklar har felet 0.05 och ger landning på 20%c%0.2f\n')
 fprintf('\n')
 %% ----- Part 5-------
 % Calculate convergences and errors
 %Convergence rate of Runge Kutta's Method
 fprintf('--- Felskattningar ---\n')
 % Repeat RK4 while halving step size
-
+uw = 0; 
 H =[];
 tol = 1e-6;   % Truncation error in index finder below
 u_test = u_45;
+ind = 100;
 for i=1:7
     htest = 0.01/(2^(i-1));       %Halve step length with every iteration
     test = RKode(u_test, htest);
-    ind = find(abs(test.time - 2.0) < tol);  % Tolerance negates truncation error when finding 2.0
+    ind = ind*2;  % Tolerance negates truncation error when finding 2.0
     H(i) = test.x(ind);        %Evaluate next last value of landing x-value
 end
 

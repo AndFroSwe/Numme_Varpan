@@ -2,7 +2,7 @@
 %Isa Nedersjö
 clc, clear all, close all;    %Clear window
 pm = char(177); % Define plus minus symbol
-RK4_relerr = 0.0209e-2;
+RK4_relerr = 0.200e-2;
 secant_err = 0.005;
 %% ---------Part 1---------
 
@@ -39,7 +39,6 @@ u_low = start_vec(angle_low, v0);
 bana_low = RKode(u_low, h);      % Calculate low trajectory
 fprintf('--- Vinnande kastvinklar utan vind ---\n')
 fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_high, pm, secant_err, angle_low, pm, secant_err )
-fprintf('Alla vinklar har felet 0.05\n')
 
 %% --------Part 3-------
 %Interpolate and plot winning throws
@@ -83,7 +82,7 @@ for i = 1:3
     str = sprintf('Kastbanor för vinnande kast vid u_w=%i',uw2(i));
     title(str)
 end
-fprintf('\n')
+fprintf('Alla vinklar har felet 0.05 och ger landning på 20%c%0.2fm\r\n', pm, RK4_relerr*20)
 %% ----- Part 5-------
 % Calculate convergences and errors
 %Convergence rate of Runge Kutta's Method
@@ -93,10 +92,11 @@ uw = 0;
 H =[];
 tol = 1e-6;   % Truncation error in index finder below
 u_test = u_45;
+ind = 100;
 for i=1:7
     htest = 0.01/(2^(i-1));       %Halve step length with every iteration
     test = RKode(u_test, htest);
-    ind = find(abs(test.time - 2.0) < tol);  % Tolerance negates truncation error when finding 2.0
+    ind = ind*2;  % Tolerance negates truncation error when finding 2.0
     H(i) = test.x(ind);        %Evaluate next last value of landing x-value
 end
 
