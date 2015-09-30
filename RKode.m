@@ -4,7 +4,7 @@ function [bana] = RKode(u, h)
 
 yend  = 0;       %Desired end y-value
 t = 0;
-y = u(3):       % Starting y
+y = u(3);       % Starting y
 v = [u];
 bana = struct(  'time', [t],...
                 'x',    [u(1)],...
@@ -15,7 +15,9 @@ bana = struct(  'time', [t],...
 % Iterate RK until varpan hits ground
 while y >= yend;
     [vut, tut] = RKstep(u, h, t);
-    v = vut;
+    v = [v; vut];
+    u = vut;
+    t = tut;
     y = u(3);
     % Update struct
     bana.time = [bana.time tut];

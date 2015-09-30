@@ -12,16 +12,17 @@ alfa = 45;    %Arbitrary throwing angle
 global uw
 uw = 0;
 h = 0.005;    %Step size RKode
-bana = RKode(alfa,v0,uw,h);     %Runge Kuttas method of solving ODE. 
+u_45 = start_vec(alfa, v0);
+bana = RKode(u_45, h);     %Runge Kuttas method of solving ODE. 
 %Bana = Time X-pos X-speed Y-pos Y-speed
-tend = LinPol2(bana(:,1),bana(:,4),0);
-xend = LinPol2(bana(:,2),bana(:,4),0);
+tend = LinPol2(bana.time, bana.y,0);
+xend = LinPol2(bana.x, bana.y,0);
 % Errors 
-t_err = linpol_err(bana, 1);
+t_err = linpol_err(bana.time);
 x_RK4_err = xend*RK4_relerr;
-x_linpol_err = linpol_err(bana, 4);
+x_linpol_err = linpol_err(bana.x);
 t_RK4_err = tend*RK4_relerr;
-t_linpol_err = linpol_err(bana, 4);
+t_linpol_err = linpol_err(bana.time);
 fprintf('--- Kast vid godycklig vinkel---\n')
 fprintf('Vid kastvinkeln %i landar varpan på %.3f%c%0.3fmeter\n',alfa, xend, pm, x_linpol_err + x_RK4_err)
 fprintf('efter tiden %0.3f%c%0.3f sekunder\r\n', tend, pm, t_RK4_err + t_linpol_err) 
@@ -33,7 +34,7 @@ alfa_high = alfa + 30;       %Starting value, high trajectory
 alfa_low = alfa - 30;        %Starting value, low trajectory
 [angle_high, n_high] = Sekant(alfa, alfa_high,v0,uw,h); %Secant method for finding solution to high traj. n = number of iterations
 [angle_low, n_low] = Sekant(alfa, alfa_low,v0,uw,h);     %Secant method for finding solution to low traj. n = number of iterations
-bana_high = RKode(angle_high,v0,uw,h);
+bana_high = RKode(angle_high,h);
 bana_low = RKode(angle_low,v0,uw,h);
 fprintf('--- Vinnande kastvinklar utan vind ---\n')
 fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_high, pm, secant_err, angle_low, pm, secant_err )
