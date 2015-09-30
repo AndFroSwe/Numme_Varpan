@@ -4,7 +4,7 @@ clear all, close all, clc
 global uw
 uw = 0;
 
-h = 0.005;
+h = 0.1;
 u = start_vec(45, 19);
 bana_big = RKode(u, h*2);
 bana_small = RKode(u, h);
