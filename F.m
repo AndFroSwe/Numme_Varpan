@@ -10,5 +10,5 @@ yvel = u(4);
 
 V = sqrt((xvel-uw)^2 + yvel^2);   % Total velocity
 
-F = [xvel -kx*(xvel-uw)*V yvel -9.81-ky*yvel*V];
+F = [xvel, -kx*(xvel-uw)*V, yvel, -9.81-ky*yvel*V];
 end

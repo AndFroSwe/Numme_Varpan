@@ -1,10 +1,19 @@
-function yut = herm(x,x1,x2,y1,y2,k1,k2)
+function [xpos, v] = herm(bana, n)
 
-h = x2-x1;
+points = 100;
+xpos = [];
+v = [];
+x1 = bana.x(n);
+x2 = bana.x(n + 1);
 
-c1 = y1 ;
-c2 = (y2-y1)/h;
-c3 = (k2-c2)/h^2;
-c4 = (k1-c2)/h^2;
 
-yut = c1+c2*(x-x1)+c3*(x-x1)^2*(x-x2)+c4*(x-x1)*(x-x2)^2;
+for i = 1:points
+    x = x1 + (x2-x1)*i/points;
+    p = Hermite(    x,...
+                    x1, x2,...
+                    bana.y(n), bana.y(n + 1),...
+                    bana.yvel(n), bana.yvel(n + 1));
+    v = [v p];
+    xpos = [xpos x];
+end
+
