@@ -5,6 +5,6 @@ function v = start_vec (deg, V)
 x = 0;
 xvel = cosd(deg)*V;
 y = 1.5;
-yvel = sind(45)*V;
+yvel = sind(deg)*V;
 
 v = [x xvel y yvel];

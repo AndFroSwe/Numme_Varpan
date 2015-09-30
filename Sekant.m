@@ -12,7 +12,7 @@ target = 20;
 % Secant method loop
 while diff > 0.005;
   f1 = Nedslag(alfa2, v, h);
-  alfa = alfa2 -(f1 - target)*(alfa2 - alfa1)/(f1 - f0);
+  alfa = alfa2 -(f1 - target)*(alfa2 - alfa1)/(f1 - f0)
   alfa1 = alfa2;
   alfa2 = alfa;
   f0 = f1;
