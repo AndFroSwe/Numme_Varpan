@@ -1,5 +1,5 @@
 %Varpan
-%Isa Nedersjö
+%Isa Nedersjï¿½
 clc, clear all, close all;    %Clear window
 pm = char(177); % Define plus minus symbol
 RK4_relerr = 0.0209e-2;
@@ -18,13 +18,12 @@ bana = RKode(u_45, h);     %Runge Kuttas method of solving ODE.
 tend = LinPol2(bana.time, bana.y,0);
 xend = LinPol2(bana.x, bana.y,0);
 % Errors 
-t_err = linpol_err(bana.time);
 x_RK4_err = xend*RK4_relerr;
 x_linpol_err = linpol_err(bana.x);
 t_RK4_err = tend*RK4_relerr;
 t_linpol_err = linpol_err(bana.time);
 fprintf('--- Kast vid godycklig vinkel---\n')
-fprintf('Vid kastvinkeln %i landar varpan på %.3f%c%0.3fmeter\n',alfa, xend, pm, x_linpol_err + x_RK4_err)
+fprintf('Vid kastvinkeln %i landar varpan pÃ¥ %.3f%c%0.3fmeter\n',alfa, xend, pm, x_linpol_err + x_RK4_err)
 fprintf('efter tiden %0.3f%c%0.3f sekunder\r\n', tend, pm, t_RK4_err + t_linpol_err) 
 
 %% --------Part 2----------
@@ -37,7 +36,7 @@ alfa_low = alfa - 30;        %Starting value, low trajectory
 bana_high = RKode(angle_high,h);
 bana_low = RKode(angle_low,v0,uw,h);
 fprintf('--- Vinnande kastvinklar utan vind ---\n')
-fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_high, pm, secant_err, angle_low, pm, secant_err )
+fprintf('Vinnande kastvinklar Ã¤r %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_high, pm, secant_err, angle_low, pm, secant_err )
 fprintf('Alla vinklar har felet 0.05\n')
 
 %% --------Part 3-------
@@ -50,8 +49,8 @@ figure(1)
 h1 = plot(x_high(:,1),x_high(:,2),'bo-');
 hold on
 h2 = plot(x_low(:,1),x_low(:,2),'rx-');
-legend([h1 h2],{'Hög bana', 'Låg bana'})
-title('Kastbanor för vinnande kast')
+legend([h1 h2],{'Hï¿½g bana', 'Lï¿½g bana'})
+title('Kastbanor fï¿½r vinnande kast')
 xlabel('X-position [m]')
 ylabel('Y-position [m]')
 grid on
@@ -67,7 +66,7 @@ for i = 1:3
     [angle_low, n_low] = Sekant(alfa, alfa_low,v0,h);     %Secant method for finding solution to low traj. n = number of iterations
     bana_high = RKode(angle_high,v1, h);
     bana_low = RKode(angle_low,v1,h);
-    fprintf('Vid uw = -%i är vinnande kastvinklar är %0.2f och %0.2f grader.\n',uw2,angle_high,angle_low)
+    fprintf('Vid uw = -%i ï¿½r vinnande kastvinklar ï¿½r %0.2f och %0.2f grader.\n',uw2,angle_high,angle_low)
     figure
     h1 = plot(bana_high(:,2),bana_high(:,4));
     hold on
@@ -76,8 +75,8 @@ for i = 1:3
     grid on;
     xlabel('X-position [m]');
     ylabel('Y-position [m]');
-    legend([h1 h2],{'Hög bana', 'Låg bana'}); 
-    str = sprintf('Kastbanor för vinnande kast vid u_w=-%i',uw2(i));
+    legend([h1 h2],{'Hï¿½g bana', 'Lï¿½g bana'}); 
+    str = sprintf('Kastbanor fï¿½r vinnande kast vid u_w=-%i',uw2(i));
     title(str)
 end
 fprintf('\n')
@@ -97,7 +96,7 @@ end
 
 % Second htest = 0.005, step length used in calculations
 rel_err_RK4 = 1 - H(2)/H(1);
-fprintf('Relativt fel för RK4 med steglängd %0.4f är %f%%\r', h, abs(rel_err_RK4*100))
+fprintf('Relativt fel fï¿½r RK4 med steglï¿½ngd %0.4f ï¿½r %f%%\r', h, abs(rel_err_RK4*100))
 % Get all diffs to verify results of error calc
 delta = diff(H);
 errors_RK4 = [];
@@ -109,7 +108,7 @@ end
 deviations = errors_RK4 - mean(errors_RK4);
 conv_rate = mean(errors_RK4);
 fprintf('Runge Kutta konvergerar med hastigheten %6.2f\r',conv_rate)
-fprintf('Konvergensberäkning har maximal avvikelse %0.2f*10^-3\r', max(abs(deviations))*1e3)
+fprintf('Konvergensberï¿½kning har maximal avvikelse %0.2f*10^-3\r', max(abs(deviations))*1e3)
 
 
 
