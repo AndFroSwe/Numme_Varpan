@@ -1,4 +1,6 @@
-function xend  = Nedslag(alfa,v,uw,h)
+function xend  = Nedslag(alfa, v, h)
 %Solves ODE and interpolates x-value at impact
-bana = RKode(alfa,v,uw,h);
-xend = LinPol2(bana(:,2),bana(:,4),0);
+
+u = start_vec(alfa, v);
+bana = RKode(u, h);                 % Get trajectory
+xend = LinPol2(bana.x, bana.y, 0);  % Interpolate landing

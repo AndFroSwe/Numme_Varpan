@@ -30,7 +30,7 @@ fprintf('efter tiden %0.3f%c%0.3f sekunder\r\n', tend, pm, t_RK4_err + t_linpol_
 %Find angles that give a winning throw 
 %Assume that high trajectory is at >45 deg and low at <45 deg
 alfa_high = alfa + 30;       %Starting value, high trajectory
-alfa_low = alfa - 30;        %Starting value, low trajectory
+alfa_low = alfa - 40;        %Starting value, low trajectory
 [angle_high, n_high] = Sekant(alfa, alfa_high, v0, h); %Secant method for finding solution to high traj. n = number of iterations
 [angle_low, n_low] = Sekant(alfa, alfa_low, v0, h);     %Secant method for finding solution to low traj. n = number of iterations
 u_high = start_vec(angle_high, v0);
@@ -82,7 +82,8 @@ for i = 1:3
     str = sprintf('Kastbanor för vinnande kast vid u_w=%i',uw2(i));
     title(str)
 end
-fprintf('Alla vinklar har felet 0.05 och ger landning på 20%c%0.2fm\r\n', pm, RK4_relerr*20)
+fprintf('Alla vinklar har felet 0.05 och ger landning på 20%c%0.2f\n')
+fprintf('\n')
 %% ----- Part 5-------
 % Calculate convergences and errors
 %Convergence rate of Runge Kutta's Method
