@@ -3,7 +3,8 @@ function [rot, n] = Sekant(alfa1, alfa2, v, h)
 
 % Define parameters
 global uw
-n=0;
+
+n = 0;
 diff = 1;
 f0 = Nedslag(alfa1, v, h);
 target = 20;

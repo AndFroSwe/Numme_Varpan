@@ -30,13 +30,13 @@ fprintf('efter tiden %0.3f%c%0.3f sekunder\r\n', tend, pm, t_RK4_err + t_linpol_
 %Find angles that give a winning throw 
 %Assume that high trajectory is at >45 deg and low at <45 deg
 alfa_high = alfa + 30;       %Starting value, high trajectory
-alfa_low = alfa - 30;        %Starting value, low trajectory
+alfa_low = alfa - 40;        %Starting value, low trajectory
 [angle_high, n_high] = Sekant(alfa, alfa_high, v0, h); %Secant method for finding solution to high traj. n = number of iterations
 [angle_low, n_low] = Sekant(alfa, alfa_low, v0, h);     %Secant method for finding solution to low traj. n = number of iterations
 u_high = start_vec(angle_high, v0);
-bana_high = RKode(angle_high, h);       % Calculate high trajectory
-
-bana_low = RKode(angle_low,v0, h);      % Calculate low trajectory
+bana_high = RKode(u_high, h);       % Calculate high trajectory
+u_low = start_vec(angle_low, v0);
+bana_low = RKode(u_low, h);      % Calculate low trajectory
 fprintf('--- Vinnande kastvinklar utan vind ---\n')
 fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_high, pm, secant_err, angle_low, pm, secant_err )
 fprintf('Alla vinklar har felet 0.05\n')
@@ -44,13 +44,13 @@ fprintf('Alla vinklar har felet 0.05\n')
 %% --------Part 3-------
 %Interpolate and plot winning throws
 %High throw
-x_high = tabell(bana_high);
-x_low = tabell(bana_low);
+high_table = Metertabell(bana_high);
+low_table = Metertabell(bana_low);
 
 figure(1)
-h1 = plot(x_high(:,1),x_high(:,2),'bo-');
+h1 = plot(high_table.x, high_table.y, 'bo-');
 hold on
-h2 = plot(x_low(:,1),x_low(:,2),'rx-');
+h2 = plot(low_table.x,low_table.y, 'rx-');
 legend([h1 h2],{'Hög bana', 'Låg bana'})
 title('Kastbanor för vinnande kast')
 xlabel('X-position [m]')
