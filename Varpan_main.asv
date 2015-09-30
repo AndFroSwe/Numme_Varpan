@@ -89,7 +89,7 @@ fprintf('\n')
 %Convergence rate of Runge Kutta's Method
 fprintf('--- Felskattningar ---\n')
 % Repeat RK4 while halving step size
-uw = 0;
+
 H =[];
 tol = 1e-6;   % Truncation error in index finder below
 u_test = u_45;
