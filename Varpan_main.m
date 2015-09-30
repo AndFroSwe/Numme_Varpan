@@ -59,28 +59,28 @@ grid on
 
 %% ---------Part 4----------
 %Simulate throws in the wind
-v1 = 19;       %Inital speed
-uw2 = [2 10 20]; %Wind speeds
+v2 = [30 35 40];       %Inital speed
+uw2 = [-2 -10 -20]; %Wind speeds
 fprintf('--- Vinnande kastvinklar vid olika motvind ---\n')
 for i = 1:3
     uw = uw2(i);
-    [angle_high, n_high] = Sekant(alfa, alfa_high, v1, h); %Secant method for finding solution to high traj. n = number of iterations
-    [angle_low, n_low] = Sekant(alfa, alfa_low, v1, h);     %Secant method for finding solution to low traj. n = number of iterations
-    u_high_uw = start_vec(angle_high, v1);
+    [angle_high, n_high] = Sekant(alfa, alfa_high, v2(i), h); %Secant method for finding solution to high traj. n = number of iterations
+    [angle_low, n_low] = Sekant(alfa, alfa_low, v2(i), h);     %Secant method for finding solution to low traj. n = number of iterations
+    u_high_uw = start_vec(angle_high, v2(i));
     bana_high = RKode(u_high_uw, h);
-    u_low_uw = start_vec(angle_low, v1);
+    u_low_uw = start_vec(angle_low, v2(i));
     bana_low = RKode(u_low_uw, h);
-    fprintf('Vid uw = %i är vinnande kastvinklar är %0.2f och %0.2f grader.\n',uw, angle_high, angle_low)
+    fprintf('Vid V=%i och uw=%i är vinnande kastvinklar är %0.2f och %0.2f grader.\n',v2(i), uw, angle_high, angle_low)
     figure
     h1 = plot(bana_high.x,bana_high.y);
     hold on
     h2 = plot(bana_low.x,bana_low.y,'r');
-    axis([0 21 0 12]);
+    %axis([0 21 0 12]);
     grid on;
     xlabel('X-position [m]');
     ylabel('Y-position [m]');
     legend([h1 h2],{'Hög bana', 'Låg bana'}); 
-    str = sprintf('Kastbanor för vinnande kast vid u_w=-%i',uw2(i));
+    str = sprintf('Kastbanor för vinnande kast vid u_w=%i',uw2(i));
     title(str)
 end
 fprintf('\n')
@@ -89,7 +89,7 @@ fprintf('\n')
 %Convergence rate of Runge Kutta's Method
 fprintf('--- Felskattningar ---\n')
 % Repeat RK4 while halving step size
-uw = 0;
+uw = 0; 
 H =[];
 tol = 1e-6;   % Truncation error in index finder below
 u_test = u_45;
