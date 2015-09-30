@@ -90,9 +90,13 @@ fprintf('--- Felskattningar ---\n')
 % Repeat RK4 while halving step size
 uw = 0; 
 H =[];
+<<<<<<< HEAD
+tol = 1e-3;
+=======
 tol = 1e-6;   % Truncation error in index finder below
 u_test = u_45;
 ind = 100;
+>>>>>>> temp
 for i=1:7
     htest = 0.01/(2^(i-1));       %Halve step length with every iteration
     test = RKode(u_test, htest);
