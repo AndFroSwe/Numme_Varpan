@@ -5,9 +5,6 @@ pm = char(177); % Define plus minus symbol
 RK4_relerr = 0.200e-2;
 secant_err = 0.005;
 hermite_err = 0.2;
-errors = struct(    'RK4', 0.2e-2,...
-                    'secant', 0.005,...
-                    'hermite', 0.2);
 %% ---------Part 1---------
 
 %Solve ODE for arbitrary throwing angle
@@ -47,12 +44,12 @@ fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_
 %% --------Part 3-------
 %Interpolate and plot winning throws
 %High throw
-high_table = Metertabell(bana_high, errors);
-low_table = Metertabell(bana_low, errors);
-disp('High trajectory')
-disp(struct2table(high_table))
-disp('Low trajectory')
-disp(struct2table(low_table))
+high_table = Metertabell(bana_high);
+low_table = Metertabell(bana_low);
+
+% Add error column
+for i = 1:length(high_table.y)
+    
 
 
 figure(1)
