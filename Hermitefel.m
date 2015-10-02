@@ -1,5 +1,5 @@
-% Print nice Hermite curve between 2 points
-clear all, close all, clc
+function [] = Hermitefel()
+% HERMITFEL plots error estimations from Hermite interpolation
 
 % Define parameters
 global uw
@@ -30,6 +30,7 @@ for n = 1:length(bana_small.x) - 1
     hold on
 end
 
+figure()
 % Plot full 
 subplot(2,1,1)
 plot(x1,y1)
@@ -56,5 +57,7 @@ title('Bana stycvis interpolerad med Hermite-interpolering, zoomad')
 legend({leg_big, leg_small})
 xlabel('x [m]')
 ylabel('y [m]')
-axis([0 1 1.3 2])
+axis([0 0.2 1.4 1.8])
 
+% Assess error from plot
+fprintf('Maximalt fel bedöms ur plot: 0.2')

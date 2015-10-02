@@ -4,6 +4,7 @@ clc, clear all, close all;    %Clear window
 pm = char(177); % Define plus minus symbol
 RK4_relerr = 0.200e-2;
 secant_err = 0.005;
+hermite_err = 0.2;
 %% ---------Part 1---------
 
 %Solve ODE for arbitrary throwing angle
@@ -74,7 +75,6 @@ for i = 1:3
     h1 = plot(bana_high.x,bana_high.y);
     hold on
     h2 = plot(bana_low.x,bana_low.y,'r');
-    %axis([0 21 0 12]);
     grid on;
     xlabel('X-position [m]');
     ylabel('Y-position [m]');
@@ -115,7 +115,9 @@ deviations = errors_RK4 - mean(errors_RK4);
 conv_rate = mean(errors_RK4);
 fprintf('Runge Kutta konvergerar med hastigheten %6.2f\r',conv_rate)
 fprintf('Konvergensberäkning har maximal avvikelse %0.2f*10^-3\r', max(abs(deviations))*1e3)
-
+ 
+% Get Hermite error
+Hermitefel()
 
 
 
