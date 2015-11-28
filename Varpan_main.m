@@ -50,9 +50,9 @@ fprintf('Vinnande kastvinklar är %0.2f%c%.3f och %0.2f%c%.3f grader.\n\n',angle_
 high_table = Metertabell(bana_high, errors);
 low_table = Metertabell(bana_low, errors);
 disp('High trajectory')
-disp(struct2table(high_table))
+%disp(struct2table(high_table))
 disp('Low trajectory')
-disp(struct2table(low_table))
+%disp(struct2table(low_table))
 
 
 figure(1)
@@ -101,8 +101,8 @@ H =[];
 tol = 1e-6;   % Truncation error in index finder below
 u_test = u_45;
 ind = 100;
-for i=1:7
-    htest = 0.01/(2^(i-1));       %Halve step length with every iteration
+for i=1:3
+    htest = (h*4)/(2^(i-1));       %Halve step length with every iteration
     test = RKode(u_test, htest);
     ind = ind*2;  % Tolerance negates truncation error when finding 2.0
     H(i) = test.x(ind);        %Evaluate next last value of landing x-value

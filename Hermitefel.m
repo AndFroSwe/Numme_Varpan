@@ -39,7 +39,7 @@ plot(x2,y2)
 grid on
 leg_big = sprintf('h=%0.3f', 2*h);
 leg_small = sprintf('h=%0.3f', h);
-title('Bana stycvis interpolerad med Hermite-interpolering')
+title('Bana styckvis interpolerad med Hermite-interpolering')
 legend({leg_big, leg_small})
 xlabel('x [m]')
 ylabel('y [m]')
@@ -49,15 +49,15 @@ hold off
 subplot(2,1,2)
 plot(x1,y1)
 hold on
-plot(x2,y2)
+plot(x2,y2,'r')
 grid on
 leg_big = sprintf('h=%0.3f', 2*h);
 leg_small = sprintf('h=%0.3f', h);
-title('Bana stycvis interpolerad med Hermite-interpolering, zoomad')
+title('Bana styckvis interpolerad med Hermite-interpolering, zoomad')
 legend({leg_big, leg_small})
 xlabel('x [m]')
 ylabel('y [m]')
 axis([0 0.2 1.4 1.8])
 
 % Assess error from plot
-fprintf('Maximalt fel bedöms ur plot: 0.2')
+fprintf('Maximalt fel bedöms ur plot: 0.2\n')
