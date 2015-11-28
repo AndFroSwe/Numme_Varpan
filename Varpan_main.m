@@ -15,7 +15,7 @@ v0 = 19;
 alfa = 45;    %Arbitrary throwing angle
 global uw
 uw = 0;
-h = 0.005;    %Step size RKode
+h = 0.05;    %Step size RKode
 u_45 = start_vec(alfa, v0);
 bana = RKode(u_45, h);     %Runge Kuttas method of solving ODE. 
 %Bana = Time X-pos X-speed Y-pos Y-speed
@@ -59,6 +59,8 @@ figure(1)
 h1 = plot(high_table.x, high_table.y, 'bo-');
 hold on
 h2 = plot(low_table.x,low_table.y, 'rx-');
+plot(bana_high.x, bana_high.y)
+plot(bana_low.x, bana_low.y)
 legend([h1 h2],{'Hög bana', 'Låg bana'})
 title('Kastbanor för vinnande kast')
 xlabel('X-position [m]')
@@ -98,32 +100,24 @@ fprintf('--- Felskattningar ---\n')
 % Repeat RK4 while halving step size
 uw = 0; 
 H =[];
-tol = 1e-6;   % Truncation error in index finder below
 u_test = u_45;
-ind = 100;
-for i=1:3
-    htest = (h*4)/(2^(i-1));       %Halve step length with every iteration
-    test = RKode(u_test, htest);
-    ind = ind*2;  % Tolerance negates truncation error when finding 2.0
-    H(i) = test.x(ind);        %Evaluate next last value of landing x-value
+num_tests = 3;
+
+for i=0:num_tests - 1
+    htest = h*2^i;       %Halve step length with every iteration
+    test = rkevalerror(u_test, htest);
+    H(i + 1) = test.x;        %Evaluate next last value of landing x-value
 end
 
-% Second htest = 0.005, step length used in calculations
-rel_err_RK4 = 1 - H(2)/H(1);
-fprintf('Relativt fel för RK4 med steglängd %0.4f är %f%%\r', h, abs(rel_err_RK4*100))
 % Get all diffs to verify results of error calc
 delta = diff(H);
 errors_RK4 = [];
-for i = 1:(length(delta)-1)
-    ratio = delta(i)/delta(i+1);
-    errors_RK4 = [errors_RK4 ratio];
-end
+conv_rate = delta(2)/delta(1);
+rk_relerr = (H(1) - H(2))/H(1)
 
-deviations = errors_RK4 - mean(errors_RK4);
-conv_rate = mean(errors_RK4);
 fprintf('Runge Kutta konvergerar med hastigheten %6.2f\r',conv_rate)
-fprintf('Konvergensberäkning har maximal avvikelse %0.2f*10^-3\r', max(abs(deviations))*1e3)
- 
+fprintf('Runge Kutta har relativt fel %6.2f\r', rk_relerr)
+
 % Get Hermite error
 Hermitefel()
 
