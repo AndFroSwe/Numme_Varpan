@@ -1,7 +1,8 @@
-function [] = Hermitefel()
-% HERMITFEL plots error estimations from Hermite interpolation by only
-% using half the points while interpolating
-
+% function [] = Hermitefel()
+% HERMITFEL plots error estimations from Hermite interpolation
+clear all 
+close all  
+clc
 % Define parameters
 global uw
 uw = 0;
@@ -19,6 +20,13 @@ times_big = [];
 y_big = [];
 times_small = [];
 y_small = [];
+
+% % Fix because of double step length
+% bana_small.time = bana_small.time(1:end-1); 
+% bana_small.x = bana_small.x(1:end-1);
+% bana_small.xvel = bana_small.xvel(1:end-1);
+% bana_small.y = bana_small.y(1:end-1);
+% bana_small.yvel = bana_small.yvel(1:end-1);
 
 k = 2; % Step factor
 % Get interpolation for 2*h
@@ -38,7 +46,6 @@ for n = 1:length(bana_small.x) - 1
     hold on
 end
 
-% Plot interpolated curve
 figure()
 plot(times_big,y_big)
 hold on
